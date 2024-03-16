@@ -1,6 +1,9 @@
 import { Context } from "koa";
 import { pool } from "./config";
 import { Document, DocumentVersion } from "./types";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5001");
 
 export const createDocument = async (ctx: Context) => {
   try {
@@ -99,6 +102,8 @@ export const editDraftDocument = async (ctx: Context) => {
     await pool.query(query, values);
     ctx.status = 200;
     ctx.body = { message: "Draft document updated successfully" };
+
+    socket.emit("documentUpdated", content);
   } catch (error) {
     ctx.body = { message: "Error updating draft document" };
     console.log("Error", error);
@@ -138,6 +143,7 @@ export const publishDraft = async (ctx: Context) => {
     await pool.query(query, values);
     ctx.status = 200;
     ctx.body = { message: "Draft document published successfully" };
+    socket.emit("documentPublished", documentVersion.content);
   } catch (error) {
     ctx.body = { message: "Error publishing draft document" };
     console.log("Error", error);
