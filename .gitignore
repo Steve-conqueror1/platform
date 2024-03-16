@@ -1,0 +1,8 @@
+/contentsAPI/node_modules
+/contentsAPI/dist
+/contentsAPI/.env
+/editorsAPI/node_modules
+/editorsAPI/dist
+/editorsAPI/.idea
+/editorsAPI/coverage
+/editorsAPI/.env
